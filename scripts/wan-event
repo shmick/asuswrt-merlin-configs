@@ -1,0 +1,20 @@
+#!/bin/sh
+
+# This script: /jffs/scripts/wan-event
+# https://github.com/RMerl/asuswrt-merlin.ng/wiki/User-scripts#wan-event
+
+# This ensures that the bridge UI can be reached even if the WAN is down
+
+IFACE=$(nvram get wan0_ifname)
+SECONDARYIP="10.10.10.2/24"
+BRIDGENET="10.10.10.0/24"
+
+case ${2} in
+  init)
+    ip addr add ${SECONDARYIP} brd + dev ${IFACE}
+    iptables -I FORWARD -j ACCEPT
+    ;;
+  connected)
+    ip addr add ${SECONDARYIP} brd + dev ${IFACE}
+    ;;
+esac
