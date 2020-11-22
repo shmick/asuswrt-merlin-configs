@@ -1,0 +1,11 @@
+#!/bin/sh
+
+# This script: /jffs/scripts/firewall-start
+# https://github.com/RMerl/asuswrt-merlin.ng/wiki/User-scripts#firewall-start
+
+# Permit the wireless bridge to reach the internet for firmware updates and NTP
+
+IFACE=$(nvram get wan0_ifname)
+BRIDGENET="10.10.10.0/24"
+
+iptables -I FORWARD -i ${IFACE} -o ${IFACE} -s ${BRIDGENET} -j ACCEPT
